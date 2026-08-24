@@ -381,6 +381,8 @@ knitr::include_url("https://i.giphy.com/VbnUQpnihPSIgIXuZv.webp", height = "600p
 
 3. Quarto's gallery <https://quarto.org/docs/gallery/>
 
+4. Using python and R together <https://nrennie.rbind.io/blog/combining-r-and-python-with-reticulate-and-quarto/>
+
 ## other tricks? {background-image="https://i.giphy.com/xTk9ZP2IPCyHl1JSP6.webp" background-size="100%"}
 
 
