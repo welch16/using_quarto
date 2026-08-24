@@ -153,14 +153,14 @@ knitr::include_url("path/to/multiqc_report.html",
 
 ---
 
-It looks as in: <https://biostat.wisc.edu/~rwelch/onglab/albertini/SatTCR_report/qc.html#multiqc-report>
+It looks as in: <https://ong-research.github.io/SatTCR/cases/canine_tcr/qc.html>
 
 
 ```{r}
 #| label: "actual-report"
 #| include: true
 
-knitr::include_url("https://biostat.wisc.edu/~rwelch/onglab/albertini/SatTCR_report/qc.html#multiqc-report", height = "720px")
+knitr::include_url("https://ong-research.github.io/SatTCR/cases/canine_tcr/qc.html", height = "720px")
 
 ```
 
