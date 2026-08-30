@@ -1,14 +1,68 @@
 /*-- scss:defaults --*/
+$theme-darkblue: #01364C;
+$theme-blue: #99D9DD;
+$theme-white: #F7F8F9;
+$theme-yellow: #F4BA02;
+$theme-orange: #ffa200;
+$theme-red: #980827;
+
+$link-color: $theme-orange;
+$title-color: $theme-orange;
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+// css
+
+#title-slide > h1 {
+  text-align: left;
+  font-weight: 300;
+  color: $title-color;
+}
+
+#title-slide > p {
+  color: #818184;
+  font-size: 65px;
+  text-align: left;
+  font-weight: 200;
+}
+
+section.has-dark-background > h2 {
+  font-weight: 200 !important;
+  color: #fff !important;
+}
+
+
+h2 {
+  font-weight: 300 !important;
+  color: $theme-orange !important;
+}
+
+
+body {
+  font-weight: 200 !important;
+  color: #404041 !important;
+}
 
 // fonts
-@import 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap';
+$font-family-sans-serif: 'Open Sans', sans-serif !default;
+$font-family-monospace: 'Source Code Pro', monospace !default;
 
-$font-family-sans-serif: "Atkinson Hyperlegible", sans-serif;
-$presentation-heading-color: #80AAD7;
-$presentation-title-slide-text-align: "left";
+// colors
+$body-bg: #FFF !default;
+$body-color: #404041 !default;
+$link-color: #447099 !default;
+$code-color: #72994E !default;
+$selection-bg: #EE6331;
 
-/*-- scss:rules --*/
+// dark colors
+$dark-bg-text-color:	#fff !default;
+$dark-bg-link-color:	#A2B8CB !default;
+$dark-bg-code-color:	#72994E !default;
 
-details>summary {
-  font-size: 0.75em;
-}
+
+// headings
+$presentation-heading-font: "Open Sans", sans-serif !default;
+
+

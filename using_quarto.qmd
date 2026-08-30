@@ -1,47 +1,113 @@
 ---
-title: "Using quarto for bioinformatics reporting"
+title: "Using Quarto for bioinformatics reporting"
 author: "Rene Welch<br>CISR / onglab / UW Madison"
-date: last-modified
+date: 2026-09-1
 format:
-  revealjs:
-    theme: slides.scss
+  revealjs:    
+    height: 900
+    width: 1600
+    theme: [slides.scss]
     multiplex: true
     transition: fade
     chalkboard: true
+    footer: <a href="https://renewelch.me/talks/using_quarto">renewelch.me</a>
     auto-stretch: false    
 resource-path: 
   - "images"
 ---
 
-# what is quarto?
+```{r}
+#| label: "setup"
+#| include: false
+#| echo: false 
+#| eval: true
 
-## A bad why of pronouncing 4? {background-image="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjhneWx2amVhcnRmODRwNHhqejMyd3l6YTc0eTcydHZucGttZm43biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IrJlMuk9wKalMiwvC9/giphy.gif" background-size="1000px"}
+library(ggplot2)
 
-# why quarto?
+theme_set(
+  theme(
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 18)
+  )
+)
 
-::: {.incremental}
+```
 
-- we had used rmarkdown or variations for a while
+# [Back in my day]{style="color:white;"} {background-image="images/old-man-cloud-HD-1079x720.jpg" text-color="white"}
 
-- it works with other languages: `Python`, `Julia`, ...
+::: {style="color:white;"}
 
-- it allows to render many things: 
+* We used [**rmarkdown**](https://rmarkdown.rstudio.com/){style="color:white;"}
 
-    - books
-    - websites
-    - manuscripts
+* There was one package for each different task:
 
-- mostly because the notation is **cleaner**
+    * documentation sites
+
+    * blogs
+
+    * books
+
+    * manuscripts
+
+* The syntax was different depending on the task
 
 :::
 
-## quarto notation I
+# [What is Quarto?]{style="color:white;"} {background-image="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjhneWx2amVhcnRmODRwNHhqejMyd3l6YTc0eTcydHZucGttZm43biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IrJlMuk9wKalMiwvC9/giphy.gif" background-size="100%"}
 
-Instead of adding everything inside the header '```{r}' header, it looks like:
+
+## What is Quarto?
+
+<https://quarto.org>
+
+::: {.incremental}
+
+Quarto is an open-source scientific and technical publishing system that builds on standard markdown with features essential for scientific communication.
+
+* Computations: Python, R, Julia, Observable JS
+* Markdown: Pandoc flavored markdown with many enhancements
+* Output: Documents, presentations, websites, books, blogs
+
+:::
+
+. . .
+
+Literate programming system in the tradition of Org-Mode, Weave.jl, R Markdown, iPyPublish, Jupyter Book, etc.
+
+# Quarto notation
+
+## Header in a single Quarto file
+
+For single documents (like these slides for example), a `yaml` header is required; the header contains 
+
+```yaml
+---
+title: "Using Quarto for bioinformatics reporting"
+author: "Rene Welch<br>CISR / onglab / UW Madison"
+date: 2026-09-01
+format:
+  revealjs:
+    theme: [slides.scss]
+    multiplex: true
+    transition: fade
+    chalkboard: true
+    footer: <a href="https://renewelch.me/talks/using_quarto">renewelch.me</a>
+    auto-stretch: false    
+resource-path: 
+  - "images"
+---
+```
+
+. . . 
+
+without header, it still works though, but the general behaviour can be configured this way.
+
+
+## Quarto chunks
+
+Generally speaking, a Quarto document is composed in two parts; the "chunks" like the one below, and the text that works with markdown syntax.
 
 ```{r}
-#| label: "test-plot"
-#| include: true
 #| echo: "fenced"
 #| eval: false
 
@@ -49,50 +115,114 @@ library(magrittr)
 library(tidyverse)
 library(ggplot2)
 
-tibble(x = rnorm(20), y = rnorm(20)) |>
+tibble(x = rnorm(200), y = rnorm(200)) |>
   ggplot(aes(x, y)) +
-    geom_point()
+    geom_point() + 
+    coord_fixed()
 
 
 ```
 
 ::: {.incremental}
 
-`echo: "fenced"` gives the code blocks like that
+`echo: "fenced"` gives the code blocks like that;
+
+`eval: false` is to not evaluate it.
 
 :::
 
-## quarto notation II
+## 
 
-modifications to the output is done within `:::`, for example tabs:
+The chunks are run from top to bottom, and for example the code above will return the plot:
+
+```{r}
+#| label: "test-plot2"
+#| include: true
+#| echo: false
+#| eval: true
+
+library(magrittr)
+library(tidyverse)
+library(ggplot2)
+
+tibble(x = rnorm(200), y = rnorm(200)) |>
+  ggplot(aes(x, y)) +
+    geom_point() + 
+    coord_fixed()
+
+
+```
+
+. . .
+
+I am using R here, but Quarto allows other languages like Python or Julia.
+
+## Quarto chunks behavior
+
+::: {.incremental}
+
+- `label` is the name, can be used to reference plots / tables generated in the chunk.
+
+- `execute` properties:
+
+    - `include` whether the elements generated in the chunk appear in the document
+
+    - `echo` whether to add the code in the documents
+
+    - `eval` whether to evaluate the code
+
+- `fig-width` and `fig-height` the size of the figure if one is being generated
+
+- `out-width` how wide the figure, e.g. `out-width: "100%"` to use all the available space
+
+:::
+
+
+## Adding tabs to a html document
+
+Modifications to the output is done within `:::`
 
 ```
 ::: {.panel-tabset}
 
-## Element 1
+## Histogram
 
-## Element 2
-
-:::
-```
-
-revealing slide points incrementally:
-
-
-```
-
-::: {.incremental}
-
- point 1
-
- point 2
+## Density
 
 :::
 ```
 
+::: {.panel-tabset}
+
+## Histogram
+
+```{r}
+#| label: "fig-histogram"
+
+tibble(x = rnorm(2000)) |>
+  ggplot(aes(x)) +
+    geom_histogram(bins = 51)
+
+```
 
 
-## callouts
+## Density
+
+```{r}
+#| label: "fig-histogram-w-density"
+
+tibble(x = rnorm(2000)) |>
+  ggplot(aes(x)) +
+    geom_histogram(bins = 51, aes(y = after_stat(density))) +
+    stat_function(fun = dnorm, args = list(mean = 0, sd = 1),
+      colour = "red", linewidth = 2)
+
+
+```
+
+:::
+
+## Making callouts in the text
 
 Using something like:
 
@@ -118,16 +248,39 @@ The results ....
 
 :::
 
+## Diagrams within Quarto
 
-# add html files inside your document
+```{dot}
+//| label: "directed-graphs"
+//| echo: "fenced"
+//| eval: true
+//| include: true
+digraph {
+  rankdir=LR
+  X -> M
+  X -> Y
+  M -> Y
+}
+```
 
-::: {.incremental}
 
-- For example to add slides or MultiQC reports into the documents
+## Diagrams within Quarto
 
-:::
+```{dot}
+//| label: "graphs"
+//| echo: "fenced"
+//| eval: true
+//| include: true
+graph {
+  rankdir=LR
+  A -- B
+  B -- C
+  A -- C
+}
+```
 
-## add html files inside your document
+
+## Add html files inside your document
 
 
 ### In the yaml header
@@ -165,9 +318,7 @@ knitr::include_url("https://ong-research.github.io/SatTCR/cases/canine_tcr/qc.ht
 ```
 
 
-
-
-# using templates with quarto
+# Using templates with Quarto
 
 ::: {.incremental}
 
@@ -177,7 +328,7 @@ knitr::include_url("https://ong-research.github.io/SatTCR/cases/canine_tcr/qc.ht
 
 :::
 
-## step 1: render function
+## Step 1: Render function
 
 ```{r}
 #| label: "setup-motif"
@@ -200,11 +351,11 @@ unparsed <- map(pdata$motif, render_file)
 
 ```
 
-## the template file looks as
+## The template file looks as
 
 ![](images/template.png){width="90%"}
 
-## step 2: parse the template
+## Step 2: parse the template
 
 ```{r}
 #| label: "setup-motif-p2"
@@ -221,93 +372,72 @@ parsed <- knitr::knit_child(text = unlist(unparsed),
 
 ```
 
-## step 3: evaluate the code in the main document
+- `unparsed` is a list of strings with the tabs in a each entry
+
+- `parsed` has the evaluated code with plots and stuff
+
+## Step 3: evaluate the code in the main document
 
 ![](images/template_parsed.png){width="75%"}
 
-::: {.incremental}
+
 In summary:
 
-- step 1: replaces the "motif" word, wherever it says "{{motif}}"
-- step 2: added `pdata` into the environment that is evaluated in the template
-- step 3: parse the results
+- Step 1: replaces the "motif" word, wherever it says "{{motif}}"
+- Step 2: added `pdata` into the environment that is evaluated in the template
+- Step 3: parse the results
 
+
+::: {.callout-warning}
+
+## Warning
+
+Even though the code seems to be running in parallel, this just writes the code and evaluate it from top to bottom, therefore we need to be careful of not re-writing data that is going to be used downstream
 
 :::
 
-# gt
 
-![](https://i.makeagif.com/media/3-30-2018/0YN2uf.gif){width="90%"}
+I wrote the instructions [in my blog too](https://renewelch.me/posts/2025-05-21-using-knitr-with-templates/) or the better version done in an R package [by Danielle Navarro](https://blog.djnavarro.net/posts/2025-07-05_quarto-syntax-from-r/)
 
-## gt: <https://gt.rstudio.com/>
+## Rendering pdf documents with typst
 
-![](images/gt_parts_of_a_table.svg){width="90%"}
+- **typst** is a new markup-based typesetting system that is designed to be as powerful as LaTeX while being much easier to learn and use
 
+- Many templates are already available [here](https://quarto.org/docs/output-formats/typst-custom.html)
 
-## gt example:
+- It is seamless to install (for example [academic-typst](https://github.com/kazuyanagimoto/quarto-academic-typst)):
 
-```{r }
-#| label: "model-example"
-#| include: true
-#| echo: "fenced"
-#| eval: false
+```sh
+## Install within quarto
+quarto install extension kazuyanagimoto/quarto-academic-typst
 
-
-  int_model |>
-    tidy_zeroinfl() |>
-    mutate(
-      component = if_else(component == "conditional", "count", "zero")) |>
-    filter(term != "(Intercept)") |>
-    select(- df.error, - original_term, -statistic) |>
-    mutate(
-      term = case_when(
-        term == "treatmenttreat" ~ "treatment",
-        term == "conditionB16_mixed" ~ "mixed dose",
-        TRUE ~ "interaction")) |>
-    gt::gt(
-      groupname_col = "component", rowname_col = "term") |>
-      gt::fmt_number(one_of(c("estimate", "std.error"))) |>
-      gt::fmt_number(starts_with("conf")) |>
-      gt::fmt_percent("conf.level") |>
-      gt::fmt_scientific("p.value") |>
-      gt::cols_add(
-        psgn = if_else(p.value <= 0.05, "*", "")) |>
-      gt::cols_label(psgn = "")
-
+## Use the template in a folder
+quarto use template kazuyanagimoto/quarto-academic-typst
 ```
 
-## gt example:
+![](images/demo_typst.png){width=60%}
 
-![](images/model_table.png){width="85%"}
+## arxiv format with Quarto / typst
 
-::: {.incremental}
+- <https://blog.stephenturner.us/p/quarto-extension-arxiv-with-typst>
 
-- this is a small table: for larger tables [`opt_interactive`](https://gt.rstudio.com/reference/opt_interactive.html) can allow for multiple pages
+![](images/arxiv_typst.png){width="70%"}
 
-:::
+## your own website
 
-# reproducible documents with targets
-
-
-
-
-# your own website
 
 ```{r}
 #| label: "my-site"
 
-knitr::include_url("https://renewelch.me", height = "400px")
+knitr::include_url("https://renewelch.me", height = "800px")
 
 ```
 
+# gifs in Quarto
 
+# ~~gifs in Quarto~~
 
-# gifs in quarto
-
-
-# ~~gifs in quarto~~
-
-# how to add cats in quarto
+# how to add cats in Quarto
 
 ## with extensions
 
@@ -373,7 +503,66 @@ knitr::include_url("https://i.giphy.com/VbnUQpnihPSIgIXuZv.webp", height = "600p
 
 :::
 
-## extra materials from people who know more than me
+# GT
+
+![](https://i.makeagif.com/media/3-30-2018/0YN2uf.gif){width="90%"}
+
+## GT: <https://gt.rstudio.com/>
+
+![](images/gt_parts_of_a_table.svg){width="90%"}
+
+
+## GT example:
+
+```{r }
+#| label: "model-example"
+#| include: true
+#| #| echo: "fenced"
+#| eval: false
+
+
+  int_model |>
+    tidy_zeroinfl() |>
+    mutate(
+      component = if_else(component == "conditional", "count", "zero")) |>
+    filter(term != "(Intercept)") |>
+    select(- df.error, - original_term, -statistic) |>
+    mutate(
+      term = case_when(
+        term == "treatmenttreat" ~ "treatment",
+        term == "conditionB16_mixed" ~ "mixed dose",
+        TRUE ~ "interaction")) |>
+    gt::gt(
+      groupname_col = "component", rowname_col = "term") |>
+      gt::fmt_number(one_of(c("estimate", "std.error"))) |>
+      gt::fmt_number(starts_with("conf")) |>
+      gt::fmt_percent("conf.level") |>
+      gt::fmt_scientific("p.value") |>
+      gt::cols_add(
+        psgn = if_else(p.value <= 0.05, "*", "")) |>
+      gt::cols_label(psgn = "")
+
+```
+
+## GT example:
+
+![](images/model_table.png){width="85%"}
+
+::: {.incremental}
+
+- this is a small table: for larger tables [`opt_interactive`](https://gt.rstudio.com/reference/opt_interactive.html) can allow for multiple pages
+
+:::
+
+## GTsummary
+
+This package run the statistical model and sets the output in a publication ready table
+
+![](images/gtsummary.png){width="70%"}
+
+
+
+## Additional materials from people who know more than me
 
 1. Quarto authoring webinar <https://jthomasmock.github.io/quarto-2hr-webinar/>
 
@@ -382,6 +571,13 @@ knitr::include_url("https://i.giphy.com/VbnUQpnihPSIgIXuZv.webp", height = "600p
 3. Quarto's gallery <https://quarto.org/docs/gallery/>
 
 4. Using python and R together <https://nrennie.rbind.io/blog/combining-r-and-python-with-reticulate-and-quarto/>
+
+5. Make pretty pdfs with typst <https://nrennie.rbind.io/blog/pdf-quarto/making-pdf-with-quarto-typst-latex/>
+
+6. Parametrized reports in Quart <https://nrennie.rbind.io/r-medicine-2026-parameterized-reports/slides/slides.html>
+
+7. Quarto and Python <https://thomasmock.quarto.pub/python/#/TitleSlide>
+
 
 ## other tricks? {background-image="https://i.giphy.com/xTk9ZP2IPCyHl1JSP6.webp" background-size="100%"}
 
