@@ -579,6 +579,6 @@ This package run the statistical model and sets the output in a publication read
 7. Quarto and Python <https://thomasmock.quarto.pub/python/#/TitleSlide>
 
 
-## other tricks? {background-image="https://i.giphy.com/xTk9ZP2IPCyHl1JSP6.webp" background-size="100%"}
+## Other tricks? {background-image="https://i.giphy.com/xTk9ZP2IPCyHl1JSP6.webp" background-size="100%"}
 
 
